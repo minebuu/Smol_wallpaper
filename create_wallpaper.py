@@ -12,6 +12,8 @@ phone_dic = {'i12':(1170, 2532),'i12mini':[1125,2436],'i12pro':[1170, 2532],'i12
 
 nft_url = {'smol_male': "https://ipfs.io/ipfs/QmY71ban6QoWg9nbNwikk6wVWknj8NFBG8nMGHEuzwfAwf/", 'smol_female': "https://gateway.pinata.cloud/ipfs/QmR87K1oY8dXL4op91A9zcz4hPmCd8JbMVDTTuUnpXyQcr/", 'brain_pet': "https://ipfs.io/ipfs/QmdRyjjv6suTcS9E1aNnKRhvL2McYynrzLbg5VwXH8cCQB/"}
 
+nft_url_local = {'smol_male': "http://bafybeiercznqjdejbvccbp4byylolmlgybsivp433qx77fkqzyt3s67ccy.ipfs.localhost:8080/", 'smol_female': "https://gateway.pinata.cloud/ipfs/QmR87K1oY8dXL4op91A9zcz4hPmCd8JbMVDTTuUnpXyQcr/", 'brain_pet': "https://ipfs.io/ipfs/QmdRyjjv6suTcS9E1aNnKRhvL2McYynrzLbg5VwXH8cCQB/"}
+
 def create_smol_wp(file_name, device, nft_loc, nft_size):
 	w = phone_dic[device][0]
 	h = phone_dic[device][1]
@@ -54,13 +56,13 @@ def create_smol_wp(file_name, device, nft_loc, nft_size):
 		for j in range(0, smol_size_tmp):
 			bg_datas[x+i, y+j] = datas[i,j]
 
-	img_bg.save("./wp_" + device + "_" + file_name, "PNG")
+	img_bg.save("./out/wp_" + device + "_" + file_name, "PNG")
 
 def get_nft_url(nft_name, id, head_size):
-	print("get_nft_url: " + str(id))
 	if nft_name == "smol":
 		if id <= LAST_MALE:
-			url = nft_url["smol_male"] + str(id) + "/" + str(head_size) + ".png"
+			# url = nft_url["smol_male"] + str(id) + "/" + str(head_size) + ".png"
+			url = nft_url_local["smol_male"] + str(id) + "/" + str(head_size) + ".png"
 		elif id <= LAST_FEMALE:
 			id = id - LAST_MALE - 1 #Female starts 0 index
 			url = nft_url["smol_female"] + str(id) + "/" + str(head_size) + ".png"
@@ -78,6 +80,8 @@ def save_nft_image(nft_name, id, head_size):
 			print(file_name + " is already exist")
 		else:
 			urllib.request.urlretrieve(url, file_name)
+			img.save("./images/smol/" + file_name,'png', optimize=True, quality=100)
+
 	elif nft_name == "brain_pet":
 		file_name = nft_name + "_" + str(id) + ".png"
 		file_gif = nft_name + "_" + str(id) + ".gif"
@@ -86,7 +90,7 @@ def save_nft_image(nft_name, id, head_size):
 		else:
 			urllib.request.urlretrieve(url, file_gif)
 			img = Image.open(file_gif)
-			img.save(file_name,'png', optimize=True, quality=100)
+			img.save("./images/brain_pets/" + file_name,'png', optimize=True, quality=100)
 	return file_name
 
 def wp(device, nft_name, id, head_size):
@@ -95,8 +99,8 @@ def wp(device, nft_name, id, head_size):
 
 # wp("i12pro","smol",710,5)
 wp("i12pro","smol",6710,5)
-wp("i12pro","smol",6711,5)
-wp("i12pro","smol",6752,5)
+# wp("i12pro","smol",6711,5)
+# wp("i12pro","smol",6752,5)
 
 
 # wp("gflip3_cover","pet",770,5)
